@@ -151,14 +151,30 @@
             android:layout_height="wrap_content"
             android:text="@string/main_base_occupation_worker" />
     </RadioGroup>
-    
-    
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/student_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="main_specific_students_title, main_specific_school_title,
-main_specific_school_input, main_specific_graduationyear_title, main_specific_graduationyear_input"/>
+        android:visibility="gone"
+        app:constraint_referenced_ids="main_specific_students_title,
+                                       main_specific_school_title,
+                                       main_specific_school_input,
+                                       main_specific_graduationyear_title,
+                                       main_specific_graduationyear_input" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/worker_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="main_specific_workers_title,
+                                       main_specific_compagny_title,
+                                       main_specific_compagny_input,
+                                       main_specific_sector_title,
+                                       main_specific_sector_spinner,
+                                       main_specific_experience_title,
+                                       main_specific_experience_input" />
 
 
     <!-- ############ SPECIFIC STUDENTS #################### -->
@@ -171,7 +187,6 @@ main_specific_school_input, main_specific_graduationyear_title, main_specific_gr
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_base_occupation_rdg" />
-
 
     <TextView
         android:id="@+id/main_specific_school_title"

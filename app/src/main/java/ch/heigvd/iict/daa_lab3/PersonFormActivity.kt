@@ -1,15 +1,15 @@
 package ch.heigvd.iict.daa_lab3
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import ch.heigvd.iict.daa_lab3.databinding.ActivityPersonFormBinding
 import ch.heigvd.iict.daa_lab3.utils.Person
 import ch.heigvd.iict.daa_lab3.utils.Student
 import ch.heigvd.iict.daa_lab3.utils.Worker
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Calendar
 
 /**
@@ -21,16 +21,6 @@ class PersonFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonFormBinding
     private var calendar: Calendar = Calendar.getInstance()
 
-    /**
-     * @brief wrapper permettant l'utilisation d'une visibilité en un type
-     */
-    enum class Visibility(
-        val asInt: Int
-    ) {
-        VISIBLE(View.VISIBLE),
-        GONE(View.GONE),
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,58 +29,51 @@ class PersonFormActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //Fill form with example Person
-        fillForm(Person.exampleWorker);
+//        fillForm(Person.exampleWorker)
 
         binding.mainBaseOccupationRdg.setOnCheckedChangeListener { _, choiceId ->
             when (choiceId) {
-                R.id.rdb_student -> {
-                    setSpecificFormView(Visibility.VISIBLE, Visibility.GONE)
-                }
-
-                R.id.rdb_worker -> {
-                    setSpecificFormView(Visibility.GONE, Visibility.VISIBLE)
-                }
+                R.id.rdb_student -> setSpecificFormView(VISIBLE, GONE)
+                R.id.rdb_worker -> setSpecificFormView(GONE, VISIBLE)
             }
         }
 
-        binding.mainBaseBirthdateInput.setOnTouchListener {_, event ->
-            when(event.action) {
-                MotionEvent.ACTION_DOWN -> {true}
-                else -> {false}
-            }
+        binding.mainBaseBirthdateBtn.setOnClickListener {
+            openDatePickerDialog()
         }
 
-        binding.okBtn.setOnClickListener{
-            Log.d("Person created",createPerson().toString())
+        binding.okBtn.setOnClickListener {
+            Log.d("Person created", createPerson().toString())
         }
 
-        binding.cancelBtn.setOnClickListener{
+        binding.cancelBtn.setOnClickListener {
             emptyForm();
         }
     }
 
-    private fun setVisibility(view: View, visibility: Visibility) {
-        view.visibility = visibility.asInt
-    }
-
-    private fun setSpecificFormView(studentView: Visibility, workerView: Visibility) {
+    private fun setSpecificFormView(studentView: Int, workerView: Int) {
         //Set de la vue étudiant
-        setVisibility(binding.mainSpecificSchoolTitle, studentView)
-        setVisibility(binding.mainSpecificSchoolInput, studentView)
-        setVisibility(binding.mainSpecificGraduationyearTitle, studentView)
-        setVisibility(binding.mainSpecificGraduationyearInput, studentView)
+        binding.studentGroup.visibility = studentView
 
         //Set de la vue employé
-        setVisibility(binding.mainSpecificCompagnyTitle, workerView)
-        setVisibility(binding.mainSpecificCompagnyInput, workerView)
-        setVisibility(binding.mainSpecificSectorTitle, workerView)
-        setVisibility(binding.mainSpecificSectorSpinner, workerView)
-        setVisibility(binding.mainSpecificExperienceTitle, workerView)
-        setVisibility(binding.mainSpecificExperienceInput, workerView)
+        binding.workerGroup.visibility = workerView
     }
 
-    private fun fillForm(person: Person?){
-        if(person == null){
+    private fun openDatePickerDialog() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(R.string.main_base_birthdate_title)
+            .build()
+
+        datePicker.isCancelable = false
+        datePicker.addOnPositiveButtonClickListener {
+            calendar.timeInMillis = it
+        }
+
+        datePicker.show(supportFragmentManager, "DatePicker")
+    }
+
+    private fun fillForm(person: Person?) {
+        if (person == null) {
             return
         }
 
@@ -99,16 +82,21 @@ class PersonFormActivity : AppCompatActivity() {
         binding.mainBaseFirstnameInput.setText(person.firstName)
         calendar = person.birthDay
         //TODO : binding.mainBaseBirthdateInput.setText(person.birthDay)
-        binding.mainBaseNationalitySpinner.setSelection(resources.getStringArray(R.array.nationalities).indexOf(person.nationality))
+        binding.mainBaseNationalitySpinner.setSelection(
+            resources.getStringArray(R.array.nationalities).indexOf(person.nationality)
+        )
         binding.additionalEmailInput.setText(person.email)
         binding.additionalRemarksInput.setText(person.remark)
 
-        when(person){
-             is Worker -> {
-                 binding.mainSpecificCompagnyInput.setText(person.company)
-                 binding.mainSpecificSectorSpinner.setSelection(resources.getStringArray(R.array.sectors).indexOf(person.sector))
-                 binding.mainSpecificExperienceInput.setText(person.experienceYear)
+        when (person) {
+            is Worker -> {
+                binding.mainSpecificCompagnyInput.setText(person.company)
+                binding.mainSpecificSectorSpinner.setSelection(
+                    resources.getStringArray(R.array.sectors).indexOf(person.sector)
+                )
+                binding.mainSpecificExperienceInput.setText(person.experienceYear)
             }
+
             is Student -> {
                 binding.mainSpecificSchoolInput.setText(person.university)
                 binding.mainSpecificGraduationyearInput.setText(person.graduationYear)
@@ -116,7 +104,7 @@ class PersonFormActivity : AppCompatActivity() {
         }
     }
 
-    private fun emptyForm(){
+    private fun emptyForm() {
         binding.mainBaseNameInput.setText("")
         binding.mainBaseFirstnameInput.setText("")
         binding.mainBaseBirthdateInput.setText("")
@@ -130,8 +118,8 @@ class PersonFormActivity : AppCompatActivity() {
         binding.mainSpecificGraduationyearInput.setText("")
     }
 
-    private fun createPerson() : Person? {
-        if(binding.rdbWorker.isChecked){
+    private fun createPerson(): Person? {
+        if (binding.rdbWorker.isChecked) {
             return Worker(
                 binding.mainBaseNameInput.toString(),
                 binding.mainBaseFirstnameInput.toString(),
@@ -143,8 +131,7 @@ class PersonFormActivity : AppCompatActivity() {
                 binding.additionalEmailInput.toString(),
                 binding.additionalRemarksInput.toString()
             )
-        }
-        else if(binding.rdbStudent.isChecked){
+        } else if (binding.rdbStudent.isChecked) {
             return Student(
                 binding.mainBaseNameInput.toString(),
                 binding.mainBaseFirstnameInput.toString(),
