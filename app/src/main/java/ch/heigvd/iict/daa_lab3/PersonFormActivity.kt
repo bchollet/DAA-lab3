@@ -128,6 +128,8 @@ class PersonFormActivity : AppCompatActivity() {
         binding.additionalRemarksInput.setText("")
         binding.mainSpecificSchoolInput.setText("")
         binding.mainSpecificGraduationyearInput.setText("")
+        binding.rdbWorker.isChecked = false
+        binding.rdbStudent.isChecked = false
     }
 
     private fun createPerson(): Person? {
