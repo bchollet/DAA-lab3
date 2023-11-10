@@ -135,32 +135,31 @@ class PersonFormActivity : AppCompatActivity() {
         binding.mainSpecificSchoolInput.setText("")
         binding.mainSpecificGraduationyearInput.setText("")
         binding.mainBaseOccupationRdg.clearCheck()
-        //setSpecificFormView(GONE, GONE)
     }
 
     private fun createPerson(): Person? {
         if (binding.rdbWorker.isChecked) {
             return Worker(
-                binding.mainBaseNameInput.toString(),
-                binding.mainBaseFirstnameInput.toString(),
+                binding.mainBaseNameInput.text.toString(),
+                binding.mainBaseFirstnameInput.text.toString(),
                 calendar,
                 binding.mainBaseNationalitySpinner.selectedItem.toString(),
-                binding.mainSpecificCompagnyInput.toString(),
+                binding.mainSpecificCompagnyInput.text.toString(),
                 binding.mainSpecificSectorSpinner.selectedItem.toString(),
                 binding.mainSpecificExperienceInput.text.toString().toInt(),
-                binding.additionalEmailInput.toString(),
-                binding.additionalRemarksInput.toString()
+                binding.additionalEmailInput.text.toString(),
+                binding.additionalRemarksInput.text.toString()
             )
         } else if (binding.rdbStudent.isChecked) {
             return Student(
-                binding.mainBaseNameInput.toString(),
-                binding.mainBaseFirstnameInput.toString(),
+                binding.mainBaseNameInput.text.toString(),
+                binding.mainBaseFirstnameInput.text.toString(),
                 calendar,
                 binding.mainBaseNationalitySpinner.selectedItem.toString(),
-                binding.mainSpecificSchoolInput.toString(),
+                binding.mainSpecificSchoolInput.text.toString(),
                 binding.mainSpecificGraduationyearInput.text.toString().toInt(),
-                binding.additionalEmailInput.toString(),
-                binding.additionalRemarksInput.toString()
+                binding.additionalEmailInput.text.toString(),
+                binding.additionalRemarksInput.text.toString()
             )
         }
         return null
