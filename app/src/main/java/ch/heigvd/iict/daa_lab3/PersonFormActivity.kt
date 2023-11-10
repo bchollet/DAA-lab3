@@ -12,7 +12,6 @@ import ch.heigvd.iict.daa_lab3.utils.Student
 import ch.heigvd.iict.daa_lab3.utils.Worker
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
@@ -41,6 +40,10 @@ class PersonFormActivity : AppCompatActivity() {
         }
 
         binding.mainBaseBirthdateBtn.setOnClickListener {
+            openDatePickerDialog()
+        }
+
+        binding.mainBaseBirthdateInput.setOnClickListener {
             openDatePickerDialog()
         }
 
