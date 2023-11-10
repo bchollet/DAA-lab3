@@ -103,18 +103,16 @@ class PersonFormActivity : AppCompatActivity() {
         binding.additionalEmailInput.setText(person.email)
         binding.additionalRemarksInput.setText(person.remark)
 
-        //Fill worker specific values
-        if(person is Worker){
-            val worker = person as Worker
-            binding.mainSpecificCompagnyInput.setText(worker.company)
-            binding.mainSpecificSectorSpinner.setSelection(resources.getStringArray(R.array.sectors).indexOf(worker.sector))
-            binding.mainSpecificExperienceInput.setText(worker.experienceYear)
-        }
-        //Fill student specific values
-        if(person is Student){
-            val student = person as Student
-            binding.mainSpecificSchoolInput.setText(student.university)
-            binding.mainSpecificGraduationyearInput.setText(student.graduationYear)
+        when(person){
+             is Worker -> {
+                 binding.mainSpecificCompagnyInput.setText(person.company)
+                 binding.mainSpecificSectorSpinner.setSelection(resources.getStringArray(R.array.sectors).indexOf(person.sector))
+                 binding.mainSpecificExperienceInput.setText(person.experienceYear)
+            }
+            is Student -> {
+                binding.mainSpecificSchoolInput.setText(person.university)
+                binding.mainSpecificGraduationyearInput.setText(person.graduationYear)
+            }
         }
     }
 
