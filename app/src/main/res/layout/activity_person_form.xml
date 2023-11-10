@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    tools:context=".PersonFormActivity">
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_title_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierMargin="50dp"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="main_base_birthdate_title"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_main_additional"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierMargin="10dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="main_base_occupation_rdg,
+                                       main_specific_graduationyear_input,
+                                       main_specific_experience_input" />
+
+    <TextView
+        android:id="@+id/main_base_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_title"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/main_base_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_name_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/main_base_name_input"/>
+
+    <EditText
+        android:id="@+id/main_base_name_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_base_name_title"
+        android:autofillHints="name"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_title"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/main_base_firstname_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_firstname_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_name_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/main_base_firstname_input"/>
+
+    <EditText
+        android:id="@+id/main_base_firstname_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_base_firstname_title"
+        android:autofillHints="name"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_name_input"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/main_base_birthdate_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_birthdate_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_firstname_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/main_base_birthdate_input"/>
+
+    <EditText
+        android:id="@+id/main_base_birthdate_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="name"
+        android:inputType="none"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_firstname_input"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toStartOf="@id/main_base_birthdate_btn" />
+
+    <Button
+        android:id="@+id/main_base_birthdate_btn"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        app:icon="@drawable/cake"
+        app:iconGravity="top"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_firstname_input"
+        app:layout_constraintStart_toEndOf="@id/main_base_birthdate_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/main_base_nationality_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_nationality_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_birthdate_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/main_base_nationality_spinner"/>
+
+    <Spinner
+        android:id="@+id/main_base_nationality_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:entries="@array/nationalities"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_birthdate_input"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/main_base_occupation_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/main_base_occupation_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_nationality_title" />
+
+    <RadioGroup
+        android:id="@+id/main_base_occupation_rdg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_base_occupation_title">
+
+        <RadioButton
+            android:id="@+id/rdb_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_base_occupation_student" />
+
+        <RadioButton
+            android:id="@+id/rdb_worker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_base_occupation_worker" />
+    </RadioGroup>
+    
+    
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/student_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="main_specific_students_title, main_specific_school_title,
+main_specific_school_input, main_specific_graduationyear_title, main_specific_graduationyear_input"/>
+
+
+    <!-- ############ SPECIFIC STUDENTS #################### -->
+    <TextView
+        android:id="@+id/main_specific_students_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_students_title"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_occupation_rdg" />
+
+
+    <TextView
+        android:id="@+id/main_specific_school_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_school_title"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_students_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/main_specific_school_input"/>
+
+    <EditText
+        android:id="@+id/main_specific_school_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_specific_school_title"
+        android:autofillHints="name"
+        android:inputType="text"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_students_title"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/main_specific_graduationyear_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_graduationyear_title"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_school_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/main_specific_graduationyear_input"/>
+
+    <EditText
+        android:id="@+id/main_specific_graduationyear_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="postalCode"
+        android:inputType="number"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_school_input"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- ############ SPECIFIC STUDENTS ENDS #################### -->
+
+
+    <!-- ############ SPECIFIC WORKER #################### -->
+    <TextView
+        android:id="@+id/main_specific_workers_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_workers_title"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_base_occupation_rdg"
+        tools:ignore="DuplicateIds" />
+
+    <TextView
+        android:id="@+id/main_specific_compagny_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_compagny_title"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_workers_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/main_specific_compagny_input"/>
+
+    <EditText
+        android:id="@+id/main_specific_compagny_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_specific_compagny_title"
+        android:autofillHints="name"
+        android:inputType="text"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_workers_title"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/main_specific_sector_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_sector_title"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_compagny_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/main_specific_sector_spinner"/>
+
+    <Spinner
+        android:id="@+id/main_specific_sector_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:entries="@array/sectors"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_compagny_input"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/main_specific_experience_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_specific_experience_title"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_sector_title"
+        app:layout_constraintBaseline_toBaselineOf="@+id/main_specific_experience_input"/>
+
+    <EditText
+        android:id="@+id/main_specific_experience_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/main_specific_experience_title"
+        android:autofillHints="name"
+        android:inputType="text"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/main_specific_sector_spinner"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- ############ SPECIFIC WORKER END #################### -->
+
+    <TextView
+        android:id="@+id/additional_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/additional_title"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier_main_additional" />
+
+    <TextView
+        android:id="@+id/additional_email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/additional_email_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/additional_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/additional_email_input"/>
+
+    <EditText
+        android:id="@+id/additional_email_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/additional_email_title"
+        android:autofillHints="emailAddress"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/additional_title"
+        app:layout_constraintStart_toEndOf="@id/barrier_title_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/additional_remarks_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/additional_remarks_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/additional_email_title" />
+
+    <EditText
+        android:id="@+id/additional_remarks_input"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:inputType="textLongMessage"
+        android:autofillHints="name"
+        app:layout_constraintTop_toBottomOf="@+id/additional_remarks_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/cancel_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/additional_remarks_input"
+        app:layout_constraintEnd_toStartOf="@+id/ok_btn"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_ok"
+        app:layout_constraintTop_toBottomOf="@+id/additional_remarks_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cancel_btn"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
