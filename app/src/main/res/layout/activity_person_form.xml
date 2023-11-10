@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:autofillHints="name"
         android:inputType="none"
+        android:enabled="false"
         app:layout_constraintTop_toBottomOf="@+id/main_base_firstname_input"
         app:layout_constraintStart_toEndOf="@id/barrier_title_input"
         app:layout_constraintEnd_toStartOf="@id/main_base_birthdate_btn" />
@@ -355,7 +356,7 @@
         android:id="@+id/additional_remarks_input"
         android:layout_width="0dp"
         android:layout_height="90dp"
-        android:inputType="textLongMessage"
+        android:inputType="textMultiLine"
         android:autofillHints="name"
         app:layout_constraintTop_toBottomOf="@+id/additional_remarks_title"
         app:layout_constraintStart_toStartOf="parent"

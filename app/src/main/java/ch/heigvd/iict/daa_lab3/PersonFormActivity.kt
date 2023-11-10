@@ -10,7 +10,10 @@ import ch.heigvd.iict.daa_lab3.utils.Person
 import ch.heigvd.iict.daa_lab3.utils.Student
 import ch.heigvd.iict.daa_lab3.utils.Worker
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 /**
  * @author Cochet Yvan, Anthonponrajkumar Pirakasraj, Chollet Bastian
@@ -66,7 +69,12 @@ class PersonFormActivity : AppCompatActivity() {
 
         datePicker.isCancelable = false
         datePicker.addOnPositiveButtonClickListener {
-            calendar.timeInMillis = it
+            calendar.apply { timeInMillis = it }.time
+            val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH)
+                .format(calendar.time)
+
+            // Mettez à jour votre champ de texte avec la date formatée
+            binding.mainBaseBirthdateInput.setText(formattedDate)
         }
 
         datePicker.show(supportFragmentManager, "DatePicker")
