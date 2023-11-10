@@ -355,7 +355,7 @@
         android:id="@+id/additional_remarks_input"
         android:layout_width="0dp"
         android:layout_height="90dp"
-        android:inputType="textLongMessage"
+        android:inputType="textMultiLine"
         android:autofillHints="name"
         app:layout_constraintTop_toBottomOf="@+id/additional_remarks_title"
         app:layout_constraintStart_toStartOf="parent"

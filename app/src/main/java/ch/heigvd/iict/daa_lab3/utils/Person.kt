@@ -36,7 +36,7 @@ abstract class Person(var name: String,
             "Sciences",
             2,
             "c.devost@email.com",
-            ""
+            "tata"
         )
         val exampleStudent = Student(
             "Dreher",

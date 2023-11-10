@@ -28,9 +28,6 @@ class PersonFormActivity : AppCompatActivity() {
         binding = ActivityPersonFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Fill form with example Person
-//        fillForm(Person.exampleWorker)
-
         binding.mainBaseOccupationRdg.setOnCheckedChangeListener { _, choiceId ->
             when (choiceId) {
                 R.id.rdb_student -> setSpecificFormView(VISIBLE, GONE)
@@ -49,6 +46,9 @@ class PersonFormActivity : AppCompatActivity() {
         binding.cancelBtn.setOnClickListener {
             emptyForm();
         }
+
+        //Fill form with example Person
+        fillForm(Person.exampleWorker)
     }
 
     private fun setSpecificFormView(studentView: Int, workerView: Int) {
@@ -80,8 +80,7 @@ class PersonFormActivity : AppCompatActivity() {
         //Fill common values
         binding.mainBaseNameInput.setText(person.name)
         binding.mainBaseFirstnameInput.setText(person.firstName)
-        calendar = person.birthDay
-        //TODO : binding.mainBaseBirthdateInput.setText(person.birthDay)
+        calendar.time = person.birthDay.time
         binding.mainBaseNationalitySpinner.setSelection(
             resources.getStringArray(R.array.nationalities).indexOf(person.nationality)
         )
@@ -90,16 +89,18 @@ class PersonFormActivity : AppCompatActivity() {
 
         when (person) {
             is Worker -> {
+                binding.rdbWorker.isChecked = true
                 binding.mainSpecificCompagnyInput.setText(person.company)
                 binding.mainSpecificSectorSpinner.setSelection(
                     resources.getStringArray(R.array.sectors).indexOf(person.sector)
                 )
-                binding.mainSpecificExperienceInput.setText(person.experienceYear)
+                binding.mainSpecificExperienceInput.setText(person.experienceYear.toString())
             }
 
             is Student -> {
+                binding.rdbStudent.isChecked = true
                 binding.mainSpecificSchoolInput.setText(person.university)
-                binding.mainSpecificGraduationyearInput.setText(person.graduationYear)
+                binding.mainSpecificGraduationyearInput.setText(person.graduationYear.toString())
             }
         }
     }
