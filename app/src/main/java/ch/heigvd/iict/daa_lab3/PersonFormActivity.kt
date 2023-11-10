@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.core.view.isEmpty
 import ch.heigvd.iict.daa_lab3.databinding.ActivityPersonFormBinding
 import ch.heigvd.iict.daa_lab3.utils.Person
 import ch.heigvd.iict.daa_lab3.utils.Student
@@ -35,6 +36,7 @@ class PersonFormActivity : AppCompatActivity() {
             when (choiceId) {
                 R.id.rdb_student -> setSpecificFormView(VISIBLE, GONE)
                 R.id.rdb_worker -> setSpecificFormView(GONE, VISIBLE)
+                else -> setSpecificFormView(GONE, GONE)
             }
         }
 
@@ -69,15 +71,19 @@ class PersonFormActivity : AppCompatActivity() {
 
         datePicker.isCancelable = false
         datePicker.addOnPositiveButtonClickListener {
-            calendar.apply { timeInMillis = it }.time
-            val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH)
-                .format(calendar.time)
-
-            // Mettez à jour votre champ de texte avec la date formatée
-            binding.mainBaseBirthdateInput.setText(formattedDate)
+             fillDate(it)
         }
 
         datePicker.show(supportFragmentManager, "DatePicker")
+    }
+
+    private fun fillDate(time : Long){
+        calendar.apply { timeInMillis = time }.time
+        val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH)
+            .format(calendar.time)
+
+        // Mettez à jour votre champ de texte avec la date formatée
+        binding.mainBaseBirthdateInput.setText(formattedDate)
     }
 
     private fun fillForm(person: Person?) {
@@ -88,7 +94,7 @@ class PersonFormActivity : AppCompatActivity() {
         //Fill common values
         binding.mainBaseNameInput.setText(person.name)
         binding.mainBaseFirstnameInput.setText(person.firstName)
-        calendar.time = person.birthDay.time
+        fillDate(person.birthDay.timeInMillis)
         binding.mainBaseNationalitySpinner.setSelection(
             resources.getStringArray(R.array.nationalities).indexOf(person.nationality)
         )
@@ -125,8 +131,8 @@ class PersonFormActivity : AppCompatActivity() {
         binding.additionalRemarksInput.setText("")
         binding.mainSpecificSchoolInput.setText("")
         binding.mainSpecificGraduationyearInput.setText("")
-        binding.rdbWorker.isChecked = false
-        binding.rdbStudent.isChecked = false
+        binding.mainBaseOccupationRdg.clearCheck()
+        //setSpecificFormView(GONE, GONE)
     }
 
     private fun createPerson(): Person? {
