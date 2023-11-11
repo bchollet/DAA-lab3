@@ -1,15 +1,15 @@
 package ch.heigvd.iict.daa_lab3
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.core.view.isEmpty
+import androidx.appcompat.app.AppCompatActivity
 import ch.heigvd.iict.daa_lab3.databinding.ActivityPersonFormBinding
 import ch.heigvd.iict.daa_lab3.utils.Person
 import ch.heigvd.iict.daa_lab3.utils.Student
 import ch.heigvd.iict.daa_lab3.utils.Worker
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.DateFormat
 import java.util.Calendar
@@ -52,12 +52,19 @@ class PersonFormActivity : AppCompatActivity() {
         }
 
         binding.cancelBtn.setOnClickListener {
-            emptyForm();
+            emptyForm()
         }
+
+        binding.additionalEmailInput.setOnEditorActionListener { _, _, _ ->
+            binding.okBtn.performClick()
+            true
+        }
+
 
         //Fill form with example Person
         fillForm(Person.exampleWorker)
     }
+
 
     private fun setSpecificFormView(studentView: Int, workerView: Int) {
         //Set de la vue étudiant
@@ -68,8 +75,20 @@ class PersonFormActivity : AppCompatActivity() {
     }
 
     private fun openDatePickerDialog() {
+
+        val today = Calendar.getInstance()
+
+        val minDate = Calendar.getInstance()
+        minDate.add(Calendar.YEAR, -110)
+
+        val constraintsBuilder = CalendarConstraints.Builder()
+        constraintsBuilder.setStart(minDate.timeInMillis)
+        constraintsBuilder.setEnd(today.timeInMillis)
+        val constraints = constraintsBuilder.build()
+
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText(R.string.main_base_birthdate_title)
+            .setCalendarConstraints(constraints)
             .build()
 
         datePicker.isCancelable = false
@@ -82,7 +101,8 @@ class PersonFormActivity : AppCompatActivity() {
 
     private fun fillDate(time : Long){
         calendar.apply { timeInMillis = time }.time
-        val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRENCH)
+        // formater la date pour l'afficher dans le champ de texte en utilisant le format local
+        val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
             .format(calendar.time)
 
         // Mettez à jour votre champ de texte avec la date formatée
@@ -121,6 +141,8 @@ class PersonFormActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun emptyForm() {
         binding.mainBaseNameInput.setText("")

@@ -340,6 +340,7 @@
         android:hint="@string/additional_email_title"
         android:autofillHints="emailAddress"
         android:inputType="textEmailAddress"
+        android:imeOptions="actionDone"
         app:layout_constraintTop_toBottomOf="@+id/additional_title"
         app:layout_constraintStart_toEndOf="@id/barrier_title_input"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -356,7 +357,7 @@
     <EditText
         android:id="@+id/additional_remarks_input"
         android:layout_width="0dp"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:autofillHints="name"
         app:layout_constraintTop_toBottomOf="@+id/additional_remarks_title"
