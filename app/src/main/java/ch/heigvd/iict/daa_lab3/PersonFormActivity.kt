@@ -160,30 +160,31 @@ class PersonFormActivity : AppCompatActivity() {
     }
 
     private fun createPerson(): Person? {
-        if (binding.rdbWorker.isChecked) {
-            return Worker(
-                binding.mainBaseNameInput.text.toString(),
-                binding.mainBaseFirstnameInput.text.toString(),
-                calendar,
-                binding.mainBaseNationalitySpinner.selectedItem.toString(),
-                binding.mainSpecificCompagnyInput.text.toString(),
-                binding.mainSpecificSectorSpinner.selectedItem.toString(),
-                binding.mainSpecificExperienceInput.text.toString().toInt(),
-                binding.additionalEmailInput.text.toString(),
-                binding.additionalRemarksInput.text.toString()
-            )
-        } else if (binding.rdbStudent.isChecked) {
-            return Student(
-                binding.mainBaseNameInput.text.toString(),
-                binding.mainBaseFirstnameInput.text.toString(),
-                calendar,
-                binding.mainBaseNationalitySpinner.selectedItem.toString(),
-                binding.mainSpecificSchoolInput.text.toString(),
-                binding.mainSpecificGraduationyearInput.text.toString().toInt(),
-                binding.additionalEmailInput.text.toString(),
-                binding.additionalRemarksInput.text.toString()
-            )
+        val name = binding.mainBaseNameInput.text?.toString()
+        val firstName = binding.mainBaseFirstnameInput.text?.toString()
+        val nationality = binding.mainBaseNationalitySpinner.selectedItem?.toString()
+        val email = binding.additionalEmailInput.text?.toString()
+        val remarks = binding.additionalRemarksInput.text?.toString()
+
+        if (!name.isNullOrBlank() && !firstName.isNullOrBlank() && !nationality.isNullOrBlank() && !email.isNullOrBlank() && !remarks.isNullOrBlank()) {
+            if (binding.rdbWorker.isChecked) {
+                val company = binding.mainSpecificCompagnyInput.text?.toString()
+                val sector = binding.mainSpecificSectorSpinner.selectedItem?.toString()
+                val experienceYear = binding.mainSpecificExperienceInput.text?.toString()?.toIntOrNull()
+
+                if (!company.isNullOrBlank() && !sector.isNullOrBlank() && experienceYear != null) {
+                    return Worker(name, firstName, calendar, nationality, company, sector, experienceYear, email, remarks)
+                }
+            } else if (binding.rdbStudent.isChecked) {
+                val school = binding.mainSpecificSchoolInput.text?.toString()
+                val graduationYear = binding.mainSpecificGraduationyearInput.text?.toString()?.toIntOrNull()
+
+                if (!school.isNullOrBlank() && graduationYear != null) {
+                    return Student(name, firstName, calendar, nationality, school, graduationYear, email, remarks)
+                }
+            }
         }
+
         return null
     }
 }
