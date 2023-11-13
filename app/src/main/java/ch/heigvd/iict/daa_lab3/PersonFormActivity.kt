@@ -2,9 +2,14 @@ package ch.heigvd.iict.daa_lab3
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.EditText
+import android.widget.RadioGroup
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import ch.heigvd.iict.daa_lab3.databinding.ActivityPersonFormBinding
 import ch.heigvd.iict.daa_lab3.utils.Person
 import ch.heigvd.iict.daa_lab3.utils.Student
@@ -14,6 +19,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Locale
+
 
 /**
  * @author Cochet Yvan, Anthonponrajkumar Pirakasraj, Chollet Bastian
@@ -31,6 +37,7 @@ class PersonFormActivity : AppCompatActivity() {
         binding = ActivityPersonFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //Listener sur RadioGroup
         binding.mainBaseOccupationRdg.setOnCheckedChangeListener { _, choiceId ->
             when (choiceId) {
                 R.id.rdb_student -> setSpecificFormView(VISIBLE, GONE)
@@ -39,33 +46,40 @@ class PersonFormActivity : AppCompatActivity() {
             }
         }
 
+        //Listener sur click bouton gâteau
         binding.mainBaseBirthdateBtn.setOnClickListener {
             openDatePickerDialog()
         }
 
+        //Listener sur click input Birthdate
         binding.mainBaseBirthdateInput.setOnClickListener {
             openDatePickerDialog()
         }
 
+        //Listener sur click OK
         binding.okBtn.setOnClickListener {
             Log.d("Person created", createPerson().toString())
         }
 
+        //Listener sur click CANCEL
         binding.cancelBtn.setOnClickListener {
             emptyForm()
         }
 
+        // Permet de valider le form au clavier sur l'input email
         binding.additionalEmailInput.setOnEditorActionListener { _, _, _ ->
-            binding.okBtn.performClick()
+            Log.d("Person created", createPerson().toString())
             true
         }
 
-
-        //Fill form with example Person
-        fillForm(Person.exampleWorker)
+        //Pré-rempli le form avec les valeurs d'une personne
+        //fillForm(Person.exampleWorker)
     }
 
 
+    /**
+     * @brief Set la visibilité de la section Student / Worker
+     */
     private fun setSpecificFormView(studentView: Int, workerView: Int) {
         //Set de la vue étudiant
         binding.studentGroup.visibility = studentView
@@ -74,18 +88,18 @@ class PersonFormActivity : AppCompatActivity() {
         binding.workerGroup.visibility = workerView
     }
 
+    /**
+     * @brief Ouvre le datepicker dialog de material. Set également une range de date
+     * possible
+     */
     private fun openDatePickerDialog() {
-
         val today = Calendar.getInstance()
-
         val minDate = Calendar.getInstance()
         minDate.add(Calendar.YEAR, -110)
-
-        val constraintsBuilder = CalendarConstraints.Builder()
-        constraintsBuilder.setStart(minDate.timeInMillis)
-        constraintsBuilder.setEnd(today.timeInMillis)
-        val constraints = constraintsBuilder.build()
-
+        val constraints = CalendarConstraints.Builder()
+            .setStart(minDate.timeInMillis)
+            .setEnd(today.timeInMillis)
+            .build()
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText(R.string.main_base_birthdate_title)
             .setCalendarConstraints(constraints)
@@ -93,28 +107,35 @@ class PersonFormActivity : AppCompatActivity() {
 
         datePicker.isCancelable = false
         datePicker.addOnPositiveButtonClickListener {
-             fillDate(it)
+            fillDate(it)
         }
 
         datePicker.show(supportFragmentManager, "DatePicker")
     }
 
-    private fun fillDate(time : Long){
+    /**
+     * @brief rempli le formulaire
+     */
+    private fun fillDate(time: Long) {
         calendar.apply { timeInMillis = time }.time
-        // formater la date pour l'afficher dans le champ de texte en utilisant le format local
+        // formate la date pour l'afficher dans le champ de texte en utilisant le format local
         val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
             .format(calendar.time)
 
-        // Mettez à jour votre champ de texte avec la date formatée
+        // Met à jour le champ de texte avec la date formatée
         binding.mainBaseBirthdateInput.setText(formattedDate)
     }
 
+    /**
+     * @brief Pré-rempli les champs du formulaire selon les propriété de la personne
+     * passée en paramètre
+     */
     private fun fillForm(person: Person?) {
         if (person == null) {
             return
         }
 
-        //Fill common values
+        //Remplissage de la partie commune
         binding.mainBaseNameInput.setText(person.name)
         binding.mainBaseFirstnameInput.setText(person.firstName)
         fillDate(person.birthDay.timeInMillis)
@@ -124,6 +145,7 @@ class PersonFormActivity : AppCompatActivity() {
         binding.additionalEmailInput.setText(person.email)
         binding.additionalRemarksInput.setText(person.remark)
 
+        //Remplissage de la partie spécifique selon le type de personne
         when (person) {
             is Worker -> {
                 binding.rdbWorker.isChecked = true
@@ -142,49 +164,117 @@ class PersonFormActivity : AppCompatActivity() {
         }
     }
 
-
-
+    /**
+     * @brief Vide le formulaire en settant une valeur par défaut à chaque type d'input
+     */
     private fun emptyForm() {
-        binding.mainBaseNameInput.setText("")
-        binding.mainBaseFirstnameInput.setText("")
-        binding.mainBaseBirthdateInput.setText("")
-        binding.mainBaseNationalitySpinner.setSelection(0)
-        binding.mainSpecificCompagnyInput.setText("")
-        binding.mainSpecificSectorSpinner.setSelection(0)
-        binding.mainSpecificExperienceInput.setText("")
-        binding.additionalEmailInput.setText("")
-        binding.additionalRemarksInput.setText("")
-        binding.mainSpecificSchoolInput.setText("")
-        binding.mainSpecificGraduationyearInput.setText("")
-        binding.mainBaseOccupationRdg.clearCheck()
-    }
-
-    private fun createPerson(): Person? {
-        val name = binding.mainBaseNameInput.text?.toString()
-        val firstName = binding.mainBaseFirstnameInput.text?.toString()
-        val nationality = binding.mainBaseNationalitySpinner.selectedItem?.toString()
-        val email = binding.additionalEmailInput.text?.toString()
-        val remarks = binding.additionalRemarksInput.text?.toString()
-
-        if (!name.isNullOrBlank() && !firstName.isNullOrBlank() && !nationality.isNullOrBlank() && !email.isNullOrBlank() && !remarks.isNullOrBlank()) {
-            if (binding.rdbWorker.isChecked) {
-                val company = binding.mainSpecificCompagnyInput.text?.toString()
-                val sector = binding.mainSpecificSectorSpinner.selectedItem?.toString()
-                val experienceYear = binding.mainSpecificExperienceInput.text?.toString()?.toIntOrNull()
-
-                if (!company.isNullOrBlank() && !sector.isNullOrBlank() && experienceYear != null) {
-                    return Worker(name, firstName, calendar, nationality, company, sector, experienceYear, email, remarks)
-                }
-            } else if (binding.rdbStudent.isChecked) {
-                val school = binding.mainSpecificSchoolInput.text?.toString()
-                val graduationYear = binding.mainSpecificGraduationyearInput.text?.toString()?.toIntOrNull()
-
-                if (!school.isNullOrBlank() && graduationYear != null) {
-                    return Student(name, firstName, calendar, nationality, school, graduationYear, email, remarks)
-                }
+        for (view: View in binding.root.children) {
+            when (view) {
+                is EditText -> view.setText("")
+                is Spinner -> view.setSelection(0)
+                is RadioGroup -> view.clearCheck()
+                else -> continue
             }
         }
+    }
 
-        return null
+    /**
+     * @brief vérifie que les champs du formulaire soient tous remplis. S'adapte selon l'état du
+     * formulaire (Sutdent ou Worker)
+     */
+    private fun isFormValid(): Boolean {
+        if (binding.mainBaseNationalitySpinner.selectedItemPosition <= 0 && listOf(
+                binding.mainBaseNameInput.text,
+                binding.mainBaseFirstnameInput.text,
+                binding.additionalEmailInput.text,
+                binding.additionalRemarksInput.text
+            ).any { it.isNullOrBlank() }
+        ) return false
+
+        when (binding.mainBaseOccupationRdg.checkedRadioButtonId) {
+            binding.rdbWorker.id -> {
+                if (binding.mainSpecificCompagnyInput.text.isNullOrBlank() ||
+                    binding.mainSpecificSectorSpinner.selectedItemPosition <= 0 ||
+                    binding.mainSpecificExperienceInput.text.isNullOrBlank()
+                ) return false
+            }
+
+            binding.rdbStudent.id -> {
+                if (binding.mainSpecificSchoolInput.text.isNullOrBlank() ||
+                    binding.mainSpecificGraduationyearInput.text.isNullOrBlank()
+                ) return false
+            }
+
+            else -> return false
+        }
+
+        return true
+    }
+
+    /**
+     * @brief Prends les valeurs des champs en communs puis les passent à la création d'un student
+     * ou d'un worker selon le radiobutton sélectionné
+     */
+    private fun createPerson(): Person? {
+        if (!isFormValid()) return null
+
+        when (binding.mainBaseOccupationRdg.checkedRadioButtonId) {
+            binding.rdbWorker.id -> return createWorker(
+                binding.mainBaseNameInput.text.toString(),
+                binding.mainBaseFirstnameInput.text.toString(),
+                binding.mainBaseNationalitySpinner.selectedItem.toString(),
+                binding.additionalEmailInput.text.toString(),
+                binding.additionalRemarksInput.text.toString()
+            )
+
+            binding.rdbStudent.id -> return createStudent(
+                binding.mainBaseNameInput.text.toString(),
+                binding.mainBaseFirstnameInput.text.toString(),
+                binding.mainBaseNationalitySpinner.selectedItem.toString(),
+                binding.additionalEmailInput.text.toString(),
+                binding.additionalRemarksInput.text.toString()
+            )
+
+            else -> return null
+        }
+    }
+
+    private fun createWorker(
+        name: String,
+        firstName: String,
+        nationality: String,
+        email: String,
+        remark: String
+    ): Worker {
+        return Worker(
+            name,
+            firstName,
+            calendar,
+            nationality,
+            binding.mainSpecificCompagnyInput.text.toString(),
+            binding.mainSpecificSectorSpinner.selectedItem.toString(),
+            binding.mainSpecificExperienceInput.text.toString().toInt(),
+            email,
+            remark
+        )
+    }
+
+    private fun createStudent(
+        name: String,
+        firstName: String,
+        nationality: String,
+        email: String,
+        remark: String
+    ): Student {
+        return Student(
+            name,
+            firstName,
+            calendar,
+            nationality,
+            binding.mainSpecificSchoolInput.text.toString(),
+            binding.mainSpecificGraduationyearInput.text.toString().toInt(),
+            email,
+            remark
+        )
     }
 }
