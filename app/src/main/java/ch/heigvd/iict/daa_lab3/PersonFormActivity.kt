@@ -118,7 +118,7 @@ class PersonFormActivity : AppCompatActivity() {
      */
     private fun fillDate(time: Long) {
         calendar.apply { timeInMillis = time }.time
-        // formate la date pour l'afficher dans le champ de texte en utilisant le format local
+        // formate la date pour l'afficher dans le champ de texte en utilisant le format du sytème
         val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
             .format(calendar.time)
 
